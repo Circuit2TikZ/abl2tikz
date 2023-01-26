@@ -1,0 +1,9 @@
+## Temporary anf old files
+*.old
+*.tmp
+
+## Node.js stuff
+node_modules/
+
+## IDE
+.vscode/

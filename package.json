@@ -1,0 +1,16 @@
+{
+	"name": "xmltest",
+	"version": "0.0.1",
+	"description": "",
+	"main": "index.mjs",
+	"scripts": {
+		"test": "echo \"Error: no test specified\" && exit 1"
+	},
+	"author": "",
+	"license": "ISC",
+	"dependencies": {
+		"@xmldom/xmldom": "^0.8.5",
+		"common-xml-features": "^3.3.0"
+	},
+	"type": "module"
+}

@@ -11,11 +11,14 @@ import { Coordinate } from "./coordinate.mjs";
 import { Net } from "./net.mjs";
 import { Pin } from "./pin.mjs";
 import { Wire } from "./wire.mjs";
+import { atoLaTex } from "./physQuantityParser.mjs";
 
 import { ADS_COMPONENTS_MAP } from "./components.mjs";
 
-//onst FILENAME = "../MyFirstWorkspace_wrk/MyFirstWorkspace_lib.xml";
-const FILENAME = "../C_Test/MyWorkspace_wrk/MyLibrary_lib.xml";
+const FILENAME = "../MyFirstWorkspace_wrk/MyFirstWorkspace_lib.xml";
+// const FILENAME = "../C_Test/MyWorkspace_wrk/MyLibrary_lib.xml";
+// const FILENAME = "../C_Test/MyWorkspace_wrk/ABL_3pinComponents.xml";
+// const FILENAME = "../C_Test/MyWorkspace_wrk/ComponentsABL.xml";
 
 var BUFFER = fs.readFileSync(FILENAME, {
 	encoding: "utf8",
@@ -125,13 +128,6 @@ let wires = WireArray.map((wireXml) => {
 	return wire;
 });
 
-const instanceToTikzMap = new Map([
-	["GROUND", "tlground"], // ads_rflib
-	["R", "R"], // ads_rflib
-	["C", "C"], // ads_rflib
-	["V_AC", "sV"], // ads_simulation
-]);
-
 /** @type {Component[]} */
 const components = InstanceArray.map((instanceXml) => {
 	/** @type {Map<string,string>} */
@@ -140,22 +136,40 @@ const components = InstanceArray.map((instanceXml) => {
 	);
 	const libraryName = instanceXml.getAttribute("libraryName") || "";
 	const cellName = instanceXml.getAttribute("cellName") || "";
-	//const tikzComponentName = instanceToTikzMap.get(libraryName + ":" + cellName) || instanceToTikzMap.get(cellName);
+
 	const componentStencil = ADS_COMPONENTS_MAP.get(libraryName + ":" + cellName) || ADS_COMPONENTS_MAP.get(cellName);
-	if (!componentStencil)
+	if (!componentStencil) {
+		console.error("Component " + libraryName + ":" + cellName + " not found!");
 		//throw new Error('Can not map component "' + libraryName + ":" + cellName + '"');
 		return null;
+	}
 
 	const instanceName = instanceXml.getAttribute("instanceName") || ""; // R1 etc
 	//const parametersXml = instanceXml.getElementsByTagName("abl:Parameters")[0]?.getAttribute("name") || "gnd!";
 
+	/** @type {Map<string, {parse: boolean, suggestedUnit?: string, forceUnit?: string}>} */
+	const parameterParserSettings = new Map([
+		["C", { parse: true, suggestedUnit: "uF" }],
+		["F", { parse: true, suggestedUnit: "Hz" }],
+		["R", { parse: true, suggestedUnit: "Volt" }],
+		["L", { parse: true, suggestedUnit: "nH" }],
+	]);
+
+	/** @type {Map<string,string} */
 	const parameters = new Map(
 		Array.prototype.filter
 			.call(
 				instanceXml.getElementsByTagName("abl:Parameters")?.[0]?.childNodes || [],
 				(param) => param.getAttribute && param.getAttribute("visible") == "true"
 			)
-			.map((param) => [param.getAttribute("name"), param.getAttribute("value")])
+			.map((param) => {
+				const key = param.getAttribute("name");
+				const parameterParserSetting = parameterParserSettings.get(key) || { parse: true };
+				let value = param.getAttribute("value");
+				if (parameterParserSetting.parse)
+					atoLaTex(value, parameterParserSetting.suggestedUnit, parameterParserSetting.forceUnit);
+				return [key, value];
+			})
 	);
 
 	// <abl:PlacementTransform x="1.50000" y="-0.12500" angle="0.00000" xScale="1.00000" yScale="1.00000" mirrorX="false" mirrorY="false"/>
@@ -164,7 +178,7 @@ const components = InstanceArray.map((instanceXml) => {
 	const placement = {
 		x: parseFloat(placementXml?.getAttribute("x")) || 0,
 		y: parseFloat(placementXml?.getAttribute("y")) || 0,
-		angle: -parseFloat(placementXml?.getAttribute("angle")) || 0, // ADS: clock wise; tikz/math: counter clock wise
+		angle: parseFloat(placementXml?.getAttribute("angle")) || 0,
 		xScale: parseFloat(placementXml?.getAttribute("xScale")) || 1,
 		yScale: parseFloat(placementXml?.getAttribute("yScale")) || 1,
 		mirrorX: placementXml?.getAttribute("mirrorX") == "true" || false,
@@ -187,7 +201,7 @@ const components = InstanceArray.map((instanceXml) => {
 		return new Pin(null, pinName, instTermNumber, net);
 	});
 
-	return componentStencil.cloneToPosition(
+	return componentStencil.useAsStencil(
 		libraryName,
 		cellName,
 		instanceName,

@@ -7,8 +7,8 @@ import { Pin } from "./pin.mjs";
  *
  * @extends NodeComponent
  * @property {string} instanceName - the instance name, e.g. "R1"
- * @property {[Pin, Pin, Pin]} pins - top, bottom and tap pin
- * @property {[string, string, string]} anchorNames - top, bottom and tap pin name
+ * @property {Pin[]} pins - top, bottom and tap pin
+ * @property {string[]} anchorNames - top, bottom and tap pin name
  * @property {0|1|2|null} anchorNr - the selected anchor; 0=top, 1=bottom, 2=tap; null=use mid
  * @property {string} nodeName - the name of the node
  */
@@ -26,8 +26,8 @@ class Transistor extends NodeComponent {
 	 *
 	 * @param {string} tikzComponentName - the tikz component name, e.g. "R"
 	 * @param {string} [instanceName=""] - the instance name, e.g. "R1"
-	 * @param {[Pin, Pin, Pin]} pins - top, bottom and tap pin
-	 * @param {[string, string, string]} anchorNames - top, bottom and tap pin name
+	 * @param {Pin[]} pins - top, bottom and tap pin
+	 * @param {string[]} anchorNames - top, bottom and tap pin name
 	 * @param {0|1|2|null} anchorNr - the selected anchor; 0=top, 1=bottom, 2=tap; null=use mid/bulk
 	 * @param {Coordinate} [coord] - position if selected anchor == null
 	 * @param {string} [nodeName=""] - the name of the node
@@ -69,7 +69,7 @@ class Transistor extends NodeComponent {
 	 * Creates a new stencil from a TikZ pgfkeys alike object
 	 *
 	 * @param {string} tikzComponentName
-	 * @param {[Pin, Pin, Pin]} pins - top, bottom and tap pin
+	 * @param {Pin[]} pins - top, bottom and tap pin
 	 * @param {tikzTripolOptions} options
 	 * @param {string} [nodeName=""]
 	 *
@@ -116,11 +116,13 @@ class Transistor extends NodeComponent {
 	}
 
 	/**
-	 * @returns {Coordinate} the component position
+	 * @returns {Coordinate|null} the component position
 	 */
 	get coord() {
 		if (this.anchorNr == null) return this.anchorCoord;
-		else return this.pins[this.anchorNr]?.coord;
+		else if (this.pins[this.anchorNr])
+			return this.pins[this.anchorNr].coord;
+		else return null;
 	}
 
 	/**
@@ -185,7 +187,7 @@ class Transistor extends NodeComponent {
 	 * @param {Coordinate} vector - vector to add to all coordinates
 	 */
 	translate(vector) {
-		[...this.pins.map((pin) => pin?.coord), this.anchorCoord].forEach((coord) => coord && coord.add(vector));
+		[...this.pins.map((pin) => pin.coord), this.anchorCoord].forEach((coord) => coord && coord.add(vector));
 	}
 
 	/**

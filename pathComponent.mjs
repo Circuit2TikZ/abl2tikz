@@ -16,7 +16,7 @@ class PathComponent extends Component {
 	#tikzComponentName;
 	/** @property {string} instanceName - the instance name, e.g. "R1" */
 	instanceName;
-	/** @property {[Pin, Pin]} pins - a list of the corresponding pins */
+	/** @property {Pin[]} pins - a list of the two corresponding pins */
 	pins;
 
 	/**
@@ -24,7 +24,7 @@ class PathComponent extends Component {
 	 *
 	 * @param {string} tikzComponentName - the tikz component name, e.g. "R"
 	 * @param {string} [instanceName=""] - the instance name, e.g. "R1"
-	 * @param {[Pin, Pin]} pins - a list of the corresponding pins
+	 * @param {Pin[]} pins - a list of the two corresponding pins
 	 * @param {number} [angle=0] - the angle to rotate the component
 	 * @param {boolean} [mirrorX=false] - true to mirror on x axis
 	 * @param {boolean} [mirrorY=false] - true to mirror on y axis

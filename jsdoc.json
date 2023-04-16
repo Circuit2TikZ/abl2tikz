@@ -1,0 +1,17 @@
+{
+	"opts": {
+		"destination": "./doc",
+		"encoding": "utf8",
+		"package": "./package.json",
+		"recurse": true,
+		"readme": "README.md"
+	},
+	"plugins": ["plugins/markdown"],
+	"recurseDepth": 10,
+	"source": {
+		"exclude": ["doc/", ".git/", "jsdoc.json", "node_modules/", "package-lock.json", ".vscode/"],
+		"include": ["."],
+		"includePattern": ".+\\.(js|mjs)$"
+	},
+	"sourceType": "module"
+}

@@ -71,7 +71,11 @@ class Pin {
 	 */
 	findPosition(pins = [], placement, instanceCoord, wires, _nets, coords, relativeCoords = true) {
 		// set pin placement hints
-		this.coord = pins?.find((stencilPin) => stencilPin.instTermNumber == this.instTermNumber)?.coord?.clone();
+		if (pins){
+			let pin = pins.find((stencilPin) => stencilPin.instTermNumber == this.instTermNumber);
+			let pinCoord = pin ? pin.coord : null;
+			this.coord = pinCoord ? pinCoord.clone() : null;
+		}
 
 		if (relativeCoords) {
 			if (this.coord) {
@@ -87,6 +91,8 @@ class Pin {
 		}
 
 		// search real position
+		/** @typedef {{distance: number, coord: (Coordinate|null)}} distanceCoordStruct */
+		/** @type {distanceCoordStruct[]} */
 		const possibleCoords =
 			(this.net &&
 				wires
@@ -102,9 +108,9 @@ class Pin {
 						)
 					)) ||
 			[];
-		let coord = possibleCoords.sort((a, b) => a.distance - b.distance)?.[0]?.coord;
-		if (coord) {
-			this.coord = coord;
+		let coordStruct = possibleCoords.sort((a, b) => a.distance - b.distance)[0];
+		if (coordStruct && coordStruct.coord) {
+			this.coord = coordStruct.coord;
 			// DEBUG:
 			// console.log("found");
 		} else {

@@ -7,7 +7,7 @@ import { Transistor } from "./transistor.mjs";
  * ABL and TikZ.
  *
  * @property {Transistor} tikzTransistor - the transistor used as stencil
- * @property {[Pin, Pin, Pin]} pins - top, bottom and tap pin (ABL)
+ * @property {Pin[]} pins - top, bottom and tap pin (ABL)
  * @property {0 | 1 | 2} anchorNr - the selected anchor; 0=top, 1=bottom, 2=tap (ABL)
  */
 class ABLTransistorMapper {
@@ -19,7 +19,7 @@ class ABLTransistorMapper {
 	 * Generate the "converter" for an existing TikZ transistor stencil.
 	 *
 	 * @param {Transistor} tikzTransistor - the transistor used as stencil
-	 * @param {[Pin, Pin, Pin]} pins - top, bottom and tap coordinate
+	 * @param {Pin[]} pins - top, bottom and tap coordinate
 	 * @param {0 | 1 | 2} anchorNr - the selected anchor; 0=top, 1=bottom, 2=tap
 	 */
 	constructor(tikzTransistor, pins, anchorNr) {

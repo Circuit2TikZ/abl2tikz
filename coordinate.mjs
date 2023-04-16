@@ -113,7 +113,7 @@ class Coordinate {
 	/**
 	 * Rotate the Coordinate around `centerCoord`. The rotation is counter clockwise, like the default mathematical
 	 * rotation.
-	 * 
+	 *
 	 * @param {number} angle - rotation angle in degrees
 	 * @param {Coordinate} [centerCoord] - center of rotation
 	 * @returns {Coordinate} `this`
@@ -191,7 +191,7 @@ class Coordinate {
 	 * Scale the coordinate with one or two factors.
 	 *
 	 * @param {number} [scaleX=1] - factor for the x coordinate
-	 * @param {number,true} [scaleY=1] - factor for the y coordinate or true to use scaleX
+	 * @param {number|true} [scaleY=1] - factor for the y coordinate or true to use scaleX
 	 * @returns {Coordinate} `this`
 	 */
 	scale(scaleX = 1, scaleY = 1) {
@@ -212,7 +212,7 @@ class Coordinate {
 
 	/**
 	 * Mirrors the coordinate on the x axis (inverts y).
-	 * 
+	 *
 	 * @returns {Coordinate} `this`
 	 */
 	mirrorX() {
@@ -222,7 +222,7 @@ class Coordinate {
 
 	/**
 	 * Mirrors the coordinate on the y axis (inverts x).
-	 * 
+	 *
 	 * @returns {Coordinate} `this`
 	 */
 	mirrorY() {

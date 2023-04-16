@@ -50,7 +50,7 @@ class PotentialComponent extends NodeComponent {
 	}
 
 	/**
-	 * @returns {[Pin]} list of pins (allways one)
+	 * @returns {Pin[]} list of pins (allways one)
 	 */
 	get pins() {
 		return [this.pin];
@@ -81,7 +81,9 @@ class PotentialComponent extends NodeComponent {
 	 * @returns {string} the node text generated from the net name
 	 */
 	get nodeText() {
-		return this.potentialType.printNetName ? (this.pin?.net?.getPrettyName() || "") : "";
+		if(this.potentialType.printNetName && this.pin && this.pin.net && this.pin.net.getPrettyName)
+			return this.pin.net.getPrettyName() || "";
+		return "";
 	}
 
 	/**

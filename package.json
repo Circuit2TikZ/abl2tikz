@@ -1,18 +1,27 @@
 {
 	"name": "abl2tikz",
 	"version": "0.0.1",
+	"description": "Command line tool for converting Keysight ADS schematics to CircuiTikZ",
+	"repository": {
+		"type": "git",
+		"url": "https://git.lte.e-technik.uni-erlangen.de/studchpfmaki/ablToTikZ.git"
+	},
+	"license": "MIT",
+	"author": "Manuel Kirzinger <manuel.kirzinger@fau.de>",
 	"type": "module",
 	"main": "cli.mjs",
 	"bin": "./cli.mjs",
 	"scripts": {
-		"test": "echo \"Error: no test specified\" && exit 1"
+		"predoc": "rm -rf ./doc",
+		"doc": "npm exec -- jsdoc -c jsdoc.json",
+		"prepack": "npm run doc"
 	},
-	"author": "",
-	"license": "ISC",
 	"dependencies": {
 		"common-xml-features": "^3.3.0",
 		"uuid": "^9.0.0",
 		"yargs": "^17.7.1"
 	},
-	"type": "module"
+	"devDependencies": {
+		"jsdoc": "^4"
+	}
 }

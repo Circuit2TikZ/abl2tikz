@@ -1,10 +1,10 @@
+image: node:lts
+
 stages:
   - pack
 
 build:
   stage: pack
-  only:
-    - tags
   cache:
     key: build-cache
     paths:
@@ -14,5 +14,5 @@ build:
     policy: push
   script:
     - echo "//git.lte.e-technik.uni-erlangen.de/api/v4/projects/${CI_PROJECT_ID}/packages/npm/:_authToken=${CI_JOB_TOKEN}">.npmrc
-    - docker run -v $(pwd):/app -v /home:/home -w="/app" -u="$(id -u):$(id -g)" -e HOME node:14 npm ci
-    - docker run -v $(pwd):/app -v /home:/home -w="/app" -u="$(id -u):$(id -g)" -e HOME node:14 npm pack
+    - npm ci
+    - npm pack

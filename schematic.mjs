@@ -8,6 +8,7 @@ import { Net } from "./net.mjs";
 import { Pin } from "./pin.mjs";
 import { Wire } from "./wire.mjs";
 
+import { atoLaTex } from "./physQuantityParser.mjs";
 import { ADS_COMPONENTS_MAP } from "./components.mjs";
 import { Converter } from "./converter.mjs";
 
@@ -255,8 +256,6 @@ class Schematic {
 			},
 			[]
 		);
-
-		debugger;
 	}
 
 	/**

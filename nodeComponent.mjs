@@ -25,6 +25,15 @@ class NodeComponent extends Component {
 	 * @returns {string} the serialized component
 	 */
 	serialize(indent = 0) {
+		let text = this.nodeText || "";
+
+		// Fix rotation & mirroring of text
+		// only the schematic symbol should be rotated --> rotate text the other direction
+		if (text && (this.mirrorX || this.mirrorY))
+			text = "\\scalebox{" + (this.mirrorY ? "-1" : "1" ) + "}[" + (this.mirrorX ? "-1" : "1" ) + "]{" + text + "}";
+		if (text && this.angle)
+			text = "\\rotatebox{" + (-this.angle) + "}{" + text + "}";
+		
 		return (
 			"\t".repeat(indent) +
 			(global.DEBUG ? "\\node[color=blue, " : "\\node[") +

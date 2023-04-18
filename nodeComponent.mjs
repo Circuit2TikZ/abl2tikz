@@ -22,12 +22,12 @@ class NodeComponent extends Component {
 	 * Serializes a component. The TikZ "source code" is returned.
 	 *
 	 * @param {number} [indent=0] - the indention (= amount of tabs) to use
-	 * @returns {string} the serislized component
+	 * @returns {string} the serialized component
 	 */
 	serialize(indent = 0) {
 		return (
 			"\t".repeat(indent) +
-			"\\node[color=blue, " +
+			(global.DEBUG ? "\\node[color=blue, " : "\\node[") +
 			this.tikzComponentName +
 			(this.mirrorX ? ", yscale=-1" : "") +
 			(this.mirrorY ? ", xscale=-1" : "") +
@@ -37,7 +37,7 @@ class NodeComponent extends Component {
 			"at " +
 			this.coord.serializeName() +
 			" {" +
-			(this.nodeText || "") +
+			text +
 			"};"
 		);
 	}

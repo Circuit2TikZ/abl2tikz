@@ -28,7 +28,7 @@ class Wire {
 	serialize(indent = 0) {
 		return (
 			"\t".repeat(indent) +
-			"\\draw[Rays-Rays,red] " +
+			(global.DEBUG ? "\\draw[Rays-Rays,red] " : "\\draw ") +
 			this.coords.map((coord) => coord.serializeName()).join(" -- ") +
 			";"
 		);

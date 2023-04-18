@@ -22,6 +22,9 @@ import { Schematic } from "./schematic.mjs";
  * Functions in this file are for internal use only.
  */
 
+global.VERBOSE = false;
+global.DEBUG = false;
+
 /**
  * Opens a file for reading.
  *
@@ -146,7 +149,16 @@ function getCellArrayForInputFD(fd) {
 }
 
 yargs(hideBin(process.argv))
+	.detectLocale(false)
 	.usage("$0 <command> [args]")
+	.option("verbose", {
+		alias: "v",
+		type: "boolean",
+		description: "Print more debug messages to stdout",
+		default: false,
+		global: true,
+		coerce: (value) => global.VERBOSE = Boolean(value)
+	})
 	.command(
 		"convert <source file> [target file]",
 		"Converts a Keysight ADS schematic from the XML/ABL (Advanced Board Link) to an CircuiTikZ schematic (.pgf).",
@@ -171,6 +183,17 @@ yargs(hideBin(process.argv))
 					boolean: true,
 					description: "Overwrite target file, if existing",
 					default: false,
+				})
+				.option("debug", {
+					type: "boolean",
+					description: "Target file will contain debug symbols (circles around specific positions etc.)",
+					default: false,
+					implies: "verbose",
+					coerce: (value) => {
+						global.DEBUG = Boolean(value);
+						global.VERBOSE = global.VERBOSE || global.DEBUG;	// <-- implies verbose
+						return global.DEBUG;
+					}
 				})
 				.positional("sourcefile", {
 					describe: "The ABL/XML source file; - for stdin",

@@ -63,26 +63,30 @@ class PathComponent extends Component {
 			label = ", l=" + label;
 		}
 
-		/** marks the first pin of the component. (1)-/--[R]---(2) */
-		let pinmark = "\t".repeat(indent) + "\\draw[color=blue] " + this.pins[0].coord.serializeName() + " ";
-		if (this.angle === 0 || this.angle === 180) {
-			if (this.pins[0].coord.x < this.pins[1].coord.x)
-				// -->
-				pinmark += "++ (3pt,0) ++ (-1.25pt, -2.5pt) -- ++(2.5pt, 5pt);\n";
-			// <--
-			else pinmark += "++ (-3pt,0) ++ (-1.25pt, -2.5pt) -- ++(2.5pt, 5pt);\n";
-		} else if (this.angle === 90 || this.angle === -90) {
-			if (this.pins[0].coord.y < this.pins[1].coord.y)
-				// up
-				pinmark += "++ (0,3pt) ++ (-2.5pt, -1.25pt) -- ++(5pt, 2.5pt);\n";
-			// down
-			else pinmark += "++ (0,-3pt) ++ (-2.5pt, -1.25pt) -- ++(5pt, 2.5pt);\n";
-		} else pinmark = ""; // unknown / diagonal
+		/** DEBUG: marks the first pin of the component. (1)-/--[R]---(2) */
+		/** @type {string} */
+		let pinmark;
+		if (global.DEBUG) {
+			pinmark = "\t".repeat(indent) + "\\draw[color=blue] " + this.pins[0].coord.serializeName() + " ";
+			if (this.angle === 0 || this.angle === 180) {
+				if (this.pins[0].coord.x < this.pins[1].coord.x)
+					// -->
+					pinmark += "++ (3pt,0) ++ (-1.25pt, -2.5pt) -- ++(2.5pt, 5pt);\n";
+				// <--
+				else pinmark += "++ (-3pt,0) ++ (-1.25pt, -2.5pt) -- ++(2.5pt, 5pt);\n";
+			} else if (this.angle === 90 || this.angle === -90) {
+				if (this.pins[0].coord.y < this.pins[1].coord.y)
+					// up
+					pinmark += "++ (0,3pt) ++ (-2.5pt, -1.25pt) -- ++(5pt, 2.5pt);\n";
+				// down
+				else pinmark += "++ (0,-3pt) ++ (-2.5pt, -1.25pt) -- ++(5pt, 2.5pt);\n";
+			} else pinmark = ""; // unknown / diagonal
+		} else pinmark = "";
 
 		return (
 			pinmark +
 			"\t".repeat(indent) +
-			"\\draw[color=blue] " +
+			(global.DEBUG ? "\\draw[color=blue] " : "\\draw ") +
 			this.pins[0].coord.serializeName() +
 			" to[" +
 			this.#tikzComponentName +

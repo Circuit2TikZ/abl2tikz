@@ -163,9 +163,9 @@ const TIKZ_COMPONENTS = {
 	// ## Amplifiers
 	"op amp": new Transistor("op amp", null, [
 		// x: pgfCircRlen * tripoles/op amp/width  * .5
-		// y: pgfCircRlen * tripoles/op amp/height * .5
-		new Pin(new Coordinate(-1.4*1.7*.5, +1.4*1.4*.5), "+"),
-		new Pin(new Coordinate(-1.4*1.7*.5, -1.4*1.4*.5), "-"),
+		// y: pgfCircRlen * tripoles/op amp/height * tripoles/op amp/input height * .5
+		new Pin(new Coordinate(-1.4*1.7*.5, +1.4*1.4*.5*.5), "-"),
+		new Pin(new Coordinate(-1.4*1.7*.5, -1.4*1.4*.5*.5), "+"),
 		new Pin(new Coordinate(+1.4*1.7*.5, 0), "out")
 	], ["-", "+", "out"], null, ZERO_COORD),
 
@@ -229,7 +229,18 @@ const ADS_COMPONENTS_MAP = new Map([
 	["VtPulse", TIKZ_COMPONENTS.sqV], // ads_simulation
 
 	["ads_behavioral:Amplifier2", TIKZ_COMPONENTS.amp], // generic amplifier
-	//["OpAmp", new ABLTransistorMapper(TIKZ_COMPONENTS.npn, [TRANSISTOR_TOP_PIN, TRANSISTOR_BOTTOM_PIN, TRANSISTOR_TAP_PIN], 2)],
+	[
+		"OpAmp",
+		new ABLTransistorMapper(
+			TIKZ_COMPONENTS["op amp"],
+			[
+				new Pin(ZERO_COORD, "P__0", 1), // -
+				new Pin(new Coordinate(0, -0.5), "P__2", 3), // +
+				new Pin(new Coordinate(1, -0.25), "P__1", 2), // out
+			],
+			0 /* inv */
+		),
+	],
 ]);
 
 export { ADS_COMPONENTS_MAP };

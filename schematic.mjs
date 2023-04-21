@@ -151,10 +151,18 @@ class Schematic {
 				const libraryName = instanceXml.getAttribute("libraryName") || "";
 				/** @type {string} */
 				const cellName = instanceXml.getAttribute("cellName") || "";
+				/** @type {string} */ // R1 etc
+				const instanceName = instanceXml.getAttribute("instanceName") || "";
+
 				const componentStencil =
 					ADS_COMPONENTS_MAP.get(libraryName + ":" + cellName) || ADS_COMPONENTS_MAP.get(cellName);
 				if (!componentStencil) {
-					console.error('Skipping not identified component "' + libraryName + ":" + cellName + '"');
+					console.error(
+						"Skipping not identified component %s: %s:%s",
+						instanceName.padStart(10),
+						libraryName,
+						cellName
+					);
 					return components; // <-- just skips this component
 				}
 
@@ -166,9 +174,6 @@ class Schematic {
 						attribute.value || null,
 					])
 				);
-
-				/** @type {string} */ // R1 etc
-				const instanceName = instanceXml.getAttribute("instanceName") || "";
 
 				const parametersNode = Converter.getNamedTag(instanceXml, "parameters") || null;
 				const parameterNodes = parametersNode

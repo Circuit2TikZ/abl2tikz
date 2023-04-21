@@ -123,9 +123,9 @@ abl2tikz list-schematics myProject.xml
 ```
 creating the output
 ```
-main:
+Schematics of main:
  - my schematic
-connections:
+Schematics of connections:
  - test schematic
  - schematic
 ```

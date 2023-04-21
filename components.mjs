@@ -15,6 +15,7 @@ const TRANSISTOR_TAP_PIN = new Pin(ZERO_COORD, null, 2, null);
 const TRANSISTOR_BOTTOM_PIN = new Pin(new Coordinate(.5, -.5), null, 3, null);
 const TWO_POLE_SECOND_PIN = new Pin(new Coordinate(TWO_POLE_COMPONENT_LENGTH, 0), null, 2, null);
 const TWO_POLE_COMPONENT_PINS = [ZERO_PIN, TWO_POLE_SECOND_PIN];
+const TWO_POLE_COMPONENT_PINS_MIRRORED = [TWO_POLE_SECOND_PIN, ZERO_PIN];
 
 // prettier-ignore
 /**
@@ -58,14 +59,14 @@ const TIKZ_COMPONENTS = {
 	thRn: new PathComponent("thRn", null, TWO_POLE_COMPONENT_PINS),				// thermistor (NTC)
 
 	// ## capacitors and similar components
-	C: new PathComponent("C", null, TWO_POLE_COMPONENT_PINS),		// -| |-   capacitor
-	cC: new PathComponent("cC", null, TWO_POLE_COMPONENT_PINS),		// -| (-   curved/polarized capacitor
-	eC: new PathComponent("eC", null, TWO_POLE_COMPONENT_PINS),		// -+[]-   electrolyte capacitor
-	vC: new PathComponent("vC", null, TWO_POLE_COMPONENT_PINS),		// -|/^|-  variable capacitor
-	sC: new PathComponent("sC", null, TWO_POLE_COMPONENT_PINS),		// -|/|-   capacitive sensor
-	PZ: new PathComponent("PZ", null, TWO_POLE_COMPONENT_PINS),		// -|[]|-  piezoelectric element
-	cpe: new PathComponent("cpe", null, TWO_POLE_COMPONENT_PINS),	// -> >-   constant phase element
-	feC: new PathComponent("feC", null, TWO_POLE_COMPONENT_PINS),	// -||\||- ferroelectric capacitor
+	C: new PathComponent("C", null, TWO_POLE_COMPONENT_PINS_MIRRORED),		// -| |-   capacitor
+	cC: new PathComponent("cC", null, TWO_POLE_COMPONENT_PINS_MIRRORED),		// -| (-   curved/polarized capacitor
+	eC: new PathComponent("eC", null, TWO_POLE_COMPONENT_PINS_MIRRORED),		// -+[]-   electrolyte capacitor
+	vC: new PathComponent("vC", null, TWO_POLE_COMPONENT_PINS_MIRRORED),		// -|/^|-  variable capacitor
+	sC: new PathComponent("sC", null, TWO_POLE_COMPONENT_PINS_MIRRORED),		// -|/|-   capacitive sensor
+	PZ: new PathComponent("PZ", null, TWO_POLE_COMPONENT_PINS_MIRRORED),		// -|[]|-  piezoelectric element
+	cpe: new PathComponent("cpe", null, TWO_POLE_COMPONENT_PINS_MIRRORED),	// -> >-   constant phase element
+	feC: new PathComponent("feC", null, TWO_POLE_COMPONENT_PINS_MIRRORED),	// -||\||- ferroelectric capacitor
 
 	// ## inductors
 	L: new PathComponent("L", null, TWO_POLE_COMPONENT_PINS),					// inductor
@@ -73,6 +74,7 @@ const TIKZ_COMPONENTS = {
 	sL: new PathComponent("sL", null, TWO_POLE_COMPONENT_PINS),					// inductive sensor
 	sR: new PathComponent("sR", null, TWO_POLE_COMPONENT_PINS),					// resistive sensor
 	cuteChoke: new PathComponent("cute choke", null, TWO_POLE_COMPONENT_PINS),	// (cute) choke
+	cuteChokeTwoLine: new PathComponent("cute choke, twolineschoke", null, TWO_POLE_COMPONENT_PINS),	// (cute) choke
 
 	// ## diodes etc
 	Do: new PathComponent("Do", null, TWO_POLE_COMPONENT_PINS),					// empty diode
@@ -137,13 +139,47 @@ const TIKZ_COMPONENTS = {
 	iecConnector: new Component("iec connector", null, TWO_POLE_COMPONENT_PINS),
 
 	// ## block diagram components
-	// --> BJTs
+	amp: new PathComponent("amp", null, TWO_POLE_COMPONENT_PINS),
+
+
+
+	// ## Transistors
+	// ### BJTs
 	npn: Transistor.fromStruct("npn", ["C", "E", "B"], {width: .6, connHeight: 0, height: 1.1}),
 	pnp: Transistor.fromStruct("pnp", ["E", "C", "B"], {width: .6, connHeight: 0, height: 1.1}),
 
+	// ### FETs
 	nigfete: Transistor.fromStruct("nigfete", ["D", "S", "G"], {width: .7, connHeight: -.35, height: 1.1}),
-	pigfete: Transistor.fromStruct("pigfete", ["S", "D", "G"], {width: .7, connHeight: .35, height: 1.1})
-	//pigfete: new Transistor("pigfete", [new Pin(new Coordinate(0,1.1*.5*1.4)), new Pin(new Coordinate(-1.4*.7,.35*.5*1.1*1.4)), new Pin(new Coordinate(0,0.7*1.1)), ], ["D", "G", "S"], null, null, null, null, 0, false, false)
+	pigfete: Transistor.fromStruct("pigfete", ["S", "D", "G"], {width: .7, connHeight: .35, height: 1.1}),
+	
+	// ## Tubees
+
+	// ## RF Components
+
+	// ## Electro-Mechanical Devices
+
+	// ## Double bipoles (transformers)
+
+	// ## Amplifiers
+	"op amp": new Transistor("op amp", null, [
+		// x: pgfCircRlen * tripoles/op amp/width  * .5
+		// y: pgfCircRlen * tripoles/op amp/height * .5
+		new Pin(new Coordinate(-1.4*1.7*.5, +1.4*1.4*.5), "+"),
+		new Pin(new Coordinate(-1.4*1.7*.5, -1.4*1.4*.5), "-"),
+		new Pin(new Coordinate(+1.4*1.7*.5, 0), "out")
+	], ["-", "+", "out"], null, ZERO_COORD),
+
+	// ## Switches, buttons and jumpers
+
+	// ## Logic gates
+
+	// ## Flip-flops
+
+	// ## Multiplexer and de-multiplexer
+
+	// ## Chips (integrated circuits)
+
+	// ## Seven segment displays
 };
 
 /**
@@ -154,16 +190,46 @@ const TIKZ_COMPONENTS = {
  */
 const ADS_COMPONENTS_MAP = new Map([
 	["C", TIKZ_COMPONENTS.cC], // ads_rflib,
+	["ads_rflib:CAPQ", TIKZ_COMPONENTS.cC], // capacitor + quality factor
+	["ads_rflib:C_Pad1", TIKZ_COMPONENTS.cC], // ads_rflib, FET modelling
+	["ads_rflib:C_Space", TIKZ_COMPONENTS.cC], // ads_rflib, FET modelling
+	["ads_rflib:C_Conn", TIKZ_COMPONENTS.cC], // ads_rflib, FET modelling
+	["ads_rflib:C_dxdy", TIKZ_COMPONENTS.cC], // ads_rflib, FET modelling
+	["ads_rflib:CAPP2", TIKZ_COMPONENTS.cC], // ads_rflib, chip capacitor
+	["ads_rflib:CAPP2_Pad1", TIKZ_COMPONENTS.cC], // ads_rflib, FET modelling
+	["ads_rflib:CAPP2_Space", TIKZ_COMPONENTS.cC], // ads_rflib, FET modelling
+	["ads_rflib:CAPP2_Conn", TIKZ_COMPONENTS.cC], // ads_rflib, FET modelling
+	["ads_rflib:CQ_Pad1", TIKZ_COMPONENTS.cC], // ads_rflib, FET modelling
+	["ads_rflib:CQ_Space", TIKZ_COMPONENTS.cC], // ads_rflib, FET modelling
+	["ads_rflib:CQ_Conn", TIKZ_COMPONENTS.cC], // ads_rflib, FET modelling
+	["ads_rflib:DICAP", TIKZ_COMPONENTS.cC], // ads_rflib, FET modelling
+	["ads_rflib:DILABMLC", TIKZ_COMPONENTS.cC], // ads_rflib, FET modelling
 	["Diode", TIKZ_COMPONENTS.Do], // ads_rflib,
 	["EE_MOS1", new ABLTransistorMapper(TIKZ_COMPONENTS.nigfete, [TRANSISTOR_TOP_PIN, TRANSISTOR_BOTTOM_PIN, TRANSISTOR_TAP_PIN], 2)],
 	["GROUND", TIKZ_COMPONENTS.ground], // ads_rflib
 	["R", TIKZ_COMPONENTS.R], // ads_rflib
+	["ads_rflib:R_Pad1", TIKZ_COMPONENTS.R], // ads_rflib, FET modelling
+	["ads_rflib:R_Space", TIKZ_COMPONENTS.R], // ads_rflib, FET modelling
+	["ads_rflib:R_Conn", TIKZ_COMPONENTS.R], // ads_rflib, FET modelling
+	["ads_rflib:R_dxdy", TIKZ_COMPONENTS.R], // ads_rflib, FET modelling
 	["L", TIKZ_COMPONENTS.L], // ads_rflib
+	["ads_rflib:CIND", TIKZ_COMPONENTS.cuteChokeTwoLine], // toroidal inductor --> choke
+	["ads_rflib:RIND", TIKZ_COMPONENTS.L], // chip inductor
+	["ads_rflib:INDQ", TIKZ_COMPONENTS.L], // inductor + quality factor
+	["ads_rflib:INDQ2", TIKZ_COMPONENTS.L], // inductor + quality factor
+	["ads_rflib:L_Pad1", TIKZ_COMPONENTS.L], // ads_rflib, FET modelling
+	["ads_rflib:L_Space", TIKZ_COMPONENTS.L], // ads_rflib, FET modelling
+	["ads_rflib:L_Conn", TIKZ_COMPONENTS.L], // ads_rflib, FET modelling
+	["ads_rflib:LQ_Pad1", TIKZ_COMPONENTS.L], // ads_rflib, FET modelling
+	["ads_rflib:LQ_Space", TIKZ_COMPONENTS.L], // ads_rflib, FET modelling
+	["ads_rflib:LQ_Conn", TIKZ_COMPONENTS.L], // ads_rflib, FET modelling
 	["BJT_NPN", new ABLTransistorMapper(TIKZ_COMPONENTS.npn, [TRANSISTOR_TOP_PIN, TRANSISTOR_BOTTOM_PIN, TRANSISTOR_TAP_PIN], 2)],
 	["V_AC", TIKZ_COMPONENTS.sV], // ads_simulation
-	["V_DC", TIKZ_COMPONENTS.vsource], // ads_simulation
+	["V_DC", TIKZ_COMPONENTS.battery], // ads_simulation
 	["VtPulse", TIKZ_COMPONENTS.sqV], // ads_simulation
-	
+
+	["ads_behavioral:Amplifier2", TIKZ_COMPONENTS.amp], // generic amplifier
+	//["OpAmp", new ABLTransistorMapper(TIKZ_COMPONENTS.npn, [TRANSISTOR_TOP_PIN, TRANSISTOR_BOTTOM_PIN, TRANSISTOR_TAP_PIN], 2)],
 ]);
 
 export { ADS_COMPONENTS_MAP };

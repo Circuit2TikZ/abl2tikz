@@ -149,6 +149,8 @@ const TIKZ_COMPONENTS = {
 	pnp: Transistor.fromStruct("pnp", ["E", "C", "B"], {width: .6, connHeight: 0, height: 1.1}),
 
 	// ### FETs
+	nmos: Transistor.fromStruct("nmos", ["D", "S", "G"], {width: .7, connHeight: 0, height: 1.1}),
+	pmos: Transistor.fromStruct("pmos", ["S", "D", "G"], {width: .7, connHeight: 0, height: 1.1}),
 	nigfete: Transistor.fromStruct("nigfete", ["D", "S", "G"], {width: .7, connHeight: -.35, height: 1.1}),
 	pigfete: Transistor.fromStruct("pigfete", ["S", "D", "G"], {width: .7, connHeight: .35, height: 1.1}),
 	
@@ -182,6 +184,19 @@ const TIKZ_COMPONENTS = {
 	// ## Seven segment displays
 };
 
+// prettier-ignore
+/**
+ * Enum/map-alike of mapper objects. These contain both an TikZ and an ADS component and are used for more complex
+ * transformations.
+ * 
+ * @readonly
+ * @enum {Component}
+ */
+const ADS_TIKZ_MAPPERS = {
+	BJT: new ABLTransistorMapper(TIKZ_COMPONENTS.npn, [TRANSISTOR_TOP_PIN, TRANSISTOR_BOTTOM_PIN, TRANSISTOR_TAP_PIN], 2),
+	SIMPLE_FETN: new ABLTransistorMapper(TIKZ_COMPONENTS.nmos, [TRANSISTOR_TOP_PIN, TRANSISTOR_BOTTOM_PIN, TRANSISTOR_TAP_PIN], 2),
+}
+
 /**
  * Maps an ABL component to a TikZ component stencil. The key is either just the cellName (e.g. "R"), or
  * libraryName:cellName for specific components.
@@ -189,6 +204,15 @@ const TIKZ_COMPONENTS = {
  * @type {Map<string, Component>}
  */
 const ADS_COMPONENTS_MAP = new Map([
+	// Potentials
+	["GROUND", TIKZ_COMPONENTS.ground], // ads_rflib
+	// Voltage sources
+	["V_AC", TIKZ_COMPONENTS.sV], // ads_simulation
+	["V_DC", TIKZ_COMPONENTS.battery], // ads_simulation
+	["VtPulse", TIKZ_COMPONENTS.sqV], // ads_simulation
+
+	// #passive components
+	// ##Capacitors
 	["C", TIKZ_COMPONENTS.cC], // ads_rflib,
 	["ads_rflib:CAPQ", TIKZ_COMPONENTS.cC], // capacitor + quality factor
 	["ads_rflib:C_Pad1", TIKZ_COMPONENTS.cC], // ads_rflib, FET modelling
@@ -204,14 +228,7 @@ const ADS_COMPONENTS_MAP = new Map([
 	["ads_rflib:CQ_Conn", TIKZ_COMPONENTS.cC], // ads_rflib, FET modelling
 	["ads_rflib:DICAP", TIKZ_COMPONENTS.cC], // ads_rflib, FET modelling
 	["ads_rflib:DILABMLC", TIKZ_COMPONENTS.cC], // ads_rflib, FET modelling
-	["Diode", TIKZ_COMPONENTS.Do], // ads_rflib,
-	["EE_MOS1", new ABLTransistorMapper(TIKZ_COMPONENTS.nigfete, [TRANSISTOR_TOP_PIN, TRANSISTOR_BOTTOM_PIN, TRANSISTOR_TAP_PIN], 2)],
-	["GROUND", TIKZ_COMPONENTS.ground], // ads_rflib
-	["R", TIKZ_COMPONENTS.R], // ads_rflib
-	["ads_rflib:R_Pad1", TIKZ_COMPONENTS.R], // ads_rflib, FET modelling
-	["ads_rflib:R_Space", TIKZ_COMPONENTS.R], // ads_rflib, FET modelling
-	["ads_rflib:R_Conn", TIKZ_COMPONENTS.R], // ads_rflib, FET modelling
-	["ads_rflib:R_dxdy", TIKZ_COMPONENTS.R], // ads_rflib, FET modelling
+	// ##Inductors
 	["L", TIKZ_COMPONENTS.L], // ads_rflib
 	["ads_rflib:CIND", TIKZ_COMPONENTS.cuteChokeTwoLine], // toroidal inductor --> choke
 	["ads_rflib:RIND", TIKZ_COMPONENTS.L], // chip inductor
@@ -223,11 +240,36 @@ const ADS_COMPONENTS_MAP = new Map([
 	["ads_rflib:LQ_Pad1", TIKZ_COMPONENTS.L], // ads_rflib, FET modelling
 	["ads_rflib:LQ_Space", TIKZ_COMPONENTS.L], // ads_rflib, FET modelling
 	["ads_rflib:LQ_Conn", TIKZ_COMPONENTS.L], // ads_rflib, FET modelling
-	["BJT_NPN", new ABLTransistorMapper(TIKZ_COMPONENTS.npn, [TRANSISTOR_TOP_PIN, TRANSISTOR_BOTTOM_PIN, TRANSISTOR_TAP_PIN], 2)],
-	["V_AC", TIKZ_COMPONENTS.sV], // ads_simulation
-	["V_DC", TIKZ_COMPONENTS.battery], // ads_simulation
-	["VtPulse", TIKZ_COMPONENTS.sqV], // ads_simulation
+	// ##Resistors
+	["R", TIKZ_COMPONENTS.R], // ads_rflib
+	["ads_rflib:R_Pad1", TIKZ_COMPONENTS.R], // ads_rflib, FET modelling
+	["ads_rflib:R_Space", TIKZ_COMPONENTS.R], // ads_rflib, FET modelling
+	["ads_rflib:R_Conn", TIKZ_COMPONENTS.R], // ads_rflib, FET modelling
+	["ads_rflib:R_dxdy", TIKZ_COMPONENTS.R], // ads_rflib, FET modelling
 
+	// #active components
+	// ##Diodes
+	["Diode", TIKZ_COMPONENTS.Do], // ads_rflib,
+	["PIN", TIKZ_COMPONENTS.Do], // ads_rflib, PIN diode
+	["PIN2", TIKZ_COMPONENTS.Do], // ads_rflib, PIN diode
+	// ##Transistors
+	// ###FETs
+	["EE_MOS1", new ABLTransistorMapper(TIKZ_COMPONENTS.nigfete, [TRANSISTOR_TOP_PIN, TRANSISTOR_BOTTOM_PIN, TRANSISTOR_TAP_PIN], 2)],
+	["ads_rflib:FET", ADS_TIKZ_MAPPERS.SIMPLE_FETN], // ads_rflib, Devices-Linear
+	["ads_rflib:FET2", ADS_TIKZ_MAPPERS.SIMPLE_FETN], // ads_rflib, Devices-Linear
+	["ads_rflib:FETN1", ADS_TIKZ_MAPPERS.SIMPLE_FETN], // ads_rflib, Devices-Linear
+	["ads_rflib:FETN2", ADS_TIKZ_MAPPERS.SIMPLE_FETN], // ads_rflib, Devices-Linear
+	["ads_rflib:FETN3", ADS_TIKZ_MAPPERS.SIMPLE_FETN], // ads_rflib, Devices-Linear
+	["ads_rflib:FETN4", ADS_TIKZ_MAPPERS.SIMPLE_FETN], // ads_rflib, Devices-Linear
+	["ads_rflib:FETN4a", ADS_TIKZ_MAPPERS.SIMPLE_FETN], // ads_rflib, Devices-Linear
+	["ads_rflib:FETN5", ADS_TIKZ_MAPPERS.SIMPLE_FETN], // ads_rflib, Devices-Linear
+	// ###BJTs
+	["BJT_NPN", ADS_TIKZ_MAPPERS.BJT],
+	["ads_rflib:BIP", ADS_TIKZ_MAPPERS.BJT],
+	["ads_rflib:BIPB", ADS_TIKZ_MAPPERS.BJT],
+	["ads_rflib:HYBPI", ADS_TIKZ_MAPPERS.BJT],
+	
+	// ###Hacky workaround for OpAmps
 	["ads_behavioral:Amplifier2", TIKZ_COMPONENTS.amp], // generic amplifier
 	[
 		"OpAmp",

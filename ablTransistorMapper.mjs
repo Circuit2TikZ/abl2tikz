@@ -139,13 +139,16 @@ class ABLTransistorMapper {
 		transistor.rotate(placement.angle);
 		transistor.mirror(placement.mirrorX, placement.mirrorY);
 		transistor.translate(ablTransistorClone.lineCrossingCoord.clone().subtract(transistor.lineCrossingCoord));
-		//transistor.lineCrossingCoord;
 
-		// DEBUG:
-		/*
-		transistor.pins.forEach((pin) =>
-			console.log("\\draw[red] " + pin.coord.serializeName() + " circle [radius=1pt];")
-		);*/
+		if (global.DEBUG) {
+			// "Midpoint"
+			console.error("\\draw[Gold3] " + transistor.lineCrossingCoord.serializeName() + " circle [radius=1.2pt];");
+
+			// Initial pins of TikZ transistor (SearchHints)
+			transistor.pins.forEach((pin) =>
+				console.error("\\draw[Cornsilk4] " + pin.coord.serializeName() + " circle [radius=1.2pt];")
+			);
+		}
 
 		if (transistor.anchorNr != null && transistor.anchorCoord) {
 			const oldCoord = coords.find((existingCoord) => transistor.anchorCoord.equals(existingCoord));
@@ -163,16 +166,24 @@ class ABLTransistorMapper {
 			)
 		);
 
-		// DEBUG:
-		// pins.forEach((pin) => console.log("\\draw[blue] " + pin.coord.serializeName() + " circle [radius=1pt];"));
+		// Pins of ADS transistor
+		if (global.DEBUG)
+			pins.forEach((pin) =>
+				console.error("\\draw[SpringGreen4] " + pin.coord.serializeName() + " circle [radius=1.2pt];")
+			);
 
 		for (let i = 0; i < transistor.pins.length && i < pins.length; i++) {
 			pins[i].coord.x = transistor.pins[i].coord.x;
 			pins[i].coord.y = transistor.pins[i].coord.y;
 		}
 
-		// DEBUG:
-		// pins.forEach((pin) => console.log("\\draw[green] " + pin.coord.serializeName() + " circle [radius=1pt];"));
+		// Pins of final TikZ Transistor
+		if (global.DEBUG)
+			pins.forEach((pin) =>
+				console.error(
+					"\\node at " + pin.coord.serializeName() + " {\\color{Turquoise3}\\pgfuseplotmark{Mercedes star}};"
+				)
+			);
 
 		transistor.pins = pins;
 		transistor.instanceName = instanceName;

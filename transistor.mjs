@@ -108,10 +108,10 @@ class Transistor extends NodeComponent {
 	get nodeText() {
 		// EEMOS1 --> ${EEMOS}_{1}$
 		if (this.instanceName) {
-			let [_fullMatch, name, index] = this.instanceName.match(/^([a-zA-Z]+)[_-]?([0-9]+)$/);
+			let [_fullMatch, name, index] = this.instanceName.match(/^([a-zA-Z]+)[_-]?([0-9]+)$/) || [null, null, null];
 
 			if (name && !Number.isNaN((index = Number.parseInt(index)))) return `\${${name}}_{${index}}\$`;
-			else return this.instanceName;
+			else return this.instanceName.replace("_", "\\_");
 		} else return "";
 	}
 

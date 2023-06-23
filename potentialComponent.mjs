@@ -99,7 +99,7 @@ class PotentialComponent extends NodeComponent {
 	 * @param {Map<string,Net>} nets - list of all nets
 	 * @param {Coordinate[]} coords - list of all coordinates
 	 *
-	 * @returns {NodeComponent} the new NodeComponent
+	 * @returns {PotentialComponent} the new NodeComponent
 	 */
 	useAsStencil(libraryName, cellName, instanceName, attributes, pins, placement, wires, nets, coords) {
 		// normalize angle --> -180 < angle <= 180

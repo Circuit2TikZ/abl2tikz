@@ -195,7 +195,7 @@ const TIKZ_COMPONENTS = {
 const ADS_TIKZ_MAPPERS = {
 	BJT: new ABLTransistorMapper(TIKZ_COMPONENTS.npn, [TRANSISTOR_TOP_PIN, TRANSISTOR_BOTTOM_PIN, TRANSISTOR_TAP_PIN], 2),
 	SIMPLE_FETN: new ABLTransistorMapper(TIKZ_COMPONENTS.nmos, [TRANSISTOR_TOP_PIN, TRANSISTOR_BOTTOM_PIN, TRANSISTOR_TAP_PIN], 2),
-}
+};
 
 /**
  * Maps an ABL component to a TikZ component stencil. The key is either just the cellName (e.g. "R"), or
@@ -263,6 +263,7 @@ const ADS_COMPONENTS_MAP = new Map([
 	["ads_rflib:FETN4", ADS_TIKZ_MAPPERS.SIMPLE_FETN], // ads_rflib, Devices-Linear
 	["ads_rflib:FETN4a", ADS_TIKZ_MAPPERS.SIMPLE_FETN], // ads_rflib, Devices-Linear
 	["ads_rflib:FETN5", ADS_TIKZ_MAPPERS.SIMPLE_FETN], // ads_rflib, Devices-Linear
+	["ads_pelib:MOS_GENERIC_N", ADS_TIKZ_MAPPERS.SIMPLE_FETN],
 	// ###BJTs
 	["BJT_NPN", ADS_TIKZ_MAPPERS.BJT],
 	["ads_rflib:BIP", ADS_TIKZ_MAPPERS.BJT],

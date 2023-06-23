@@ -49,16 +49,16 @@ class PathComponent extends Component {
 	 * Serializes a component. The TikZ "source code" is returned.
 	 *
 	 * @param {number} [indent=0] - the indention (= amount of tabs) to use
-	 * @returns {string} the serislized component
+	 * @returns {string} the serialized component
 	 */
 	serialize(indent = 0) {
 		// C1 --> ${C}_{1}$
 		let label = "";
 		if (this.instanceName) {
-			let [_fullMatch, name, index] = this.instanceName.match(/^([a-zA-Z]+)[_-]?([0-9]+)$/);
+			let [_fullMatch, name, index] = this.instanceName.match(/^([a-zA-Z]+)[_-]?([0-9]+)$/) || [null, null, null];
 
 			if (name && !Number.isNaN((index = Number.parseInt(index)))) label = `\${${name}}_{${index}}\$`;
-			else label = this.instanceName;
+			else label = this.instanceName.replace("_", "\\_");
 
 			label = ", l=" + label;
 		}

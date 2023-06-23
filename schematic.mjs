@@ -29,7 +29,7 @@ class Schematic {
 	#nets;
 	/** @type {Wire[]} */
 	#wires;
-	/** @type {Component} */
+	/** @type {Component[]} */
 	#components;
 
 	/**

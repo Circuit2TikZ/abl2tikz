@@ -119,7 +119,7 @@ function strToOutFile(filename, overwrite = false) {
 }
 
 /**
- * Closes an file descriptor ignoring any errors. This also works if a file is allready closed.
+ * Closes an file descriptor ignoring any errors. This also works if a file is already closed.
  * The stdin, stdout and stderr file descriptors won't be closed.
  *
  * @param {number} fd
@@ -309,4 +309,6 @@ yargs(hideBin(process.argv))
 	)
 	.demandCommand(1, 1, "Error: No command given", "Error: Only one command is allowed")
 	.strict(true)
-	.help(true).argv;
+	.help("help")
+	.alias("h", "help")
+	.argv;

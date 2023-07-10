@@ -14,6 +14,7 @@
 	"scripts": {
 		"predoc": "rm -rf ./doc",
 		"doc": "npm exec -- jsdoc -c jsdoc.json",
+		"doc-tex": "npm exec -- jsdoc2md -c jsdoc.json -m grouped -g grouped cli.mjs | perl -0pe 's/\\[([^\\[\\]]*(\\[[^\\[\\]]*\\][^\\[\\]]*)*)(\\])/LEFTBRACKET$1RIGHTBRACKET/gm;' -e 's/([\\[\\]])/\\\\$1/gm;' -e 's/LEFTBRACKET/\\[/gm;' -e 's/RIGHTBRACKET/\\]/gm;' -e 's/\\x{e2}\\x{87}\\x{92}/\\$\\\\Rightarrow\\$/gm;' -e 's/\\x{e2}\\x{87}\\x{90}/\\$\\\\Leftarrow\\$/gm;' -e 's/\\\\&quot;//gm' | pandoc -f gfm -t latex | perl -0pe 's/(\\\\textgreater){2}/\\\\textgreater\\\\\\/\\\\textgreater/gm;' -e 's/\\\\((chapter)|((sub)*section))(?<end>[^\\*])/\\\\$1\\*$+{end}/gm;' -e 's/(^)?(\\\\(noalign|endhead|endlastfoot|bottomrule))+(\\{\\})?(?(1)([\\r\\n]*))//gm;' -e 's/^\\\\begin\\{longtable\\}(\\[\\])?\\{(\\@\\{\\})?(?<columns>[lrc]{2,})[lrc](\\@\\{\\})?\\}(?<content>.+?)^\\\\end\\{longtable\\}/\\{\\n\\\\begin\\{tabularx\\}\\{\\\\linewidth\\}\\{$+{columns}X\\}$+{content}\\\\bottomrule\\n\\\\end\\{tabularx\\}\\n\\}/gms;' -e 's/^\\\\begin\\{longtable\\}(\\[\\])?/\\{\\n\\\\centering\\n\\\\begin\\{tabular\\}/gm;' -e 's/^\\\\end\\{longtable\\}/\\\\bottomrule\\n\\\\end\\{tabular\\}\\\\par\\n\\}/gm;' > doc/doc.tex",
 		"prepack": "npm run doc"
 	},
 	"dependencies": {
@@ -22,6 +23,7 @@
 		"yargs": "^17.7.1"
 	},
 	"devDependencies": {
-		"jsdoc": "^4"
+		"jsdoc": "^4",
+		"jsdoc-to-markdown": "^8.0.0"
 	}
 }

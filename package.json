@@ -11,6 +11,13 @@
 	"type": "module",
 	"main": "cli.mjs",
 	"bin": "./cli.mjs",
+	"files": [
+		"./*.json",
+		"./*.md",
+		"./*.mjs",
+		"./LICENSE",
+		"./doc/**"
+	],
 	"scripts": {
 		"predoc": "rm -rf ./doc",
 		"doc": "npm exec -- jsdoc -c jsdoc.json",

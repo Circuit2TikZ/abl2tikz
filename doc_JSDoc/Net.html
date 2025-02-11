@@ -1,0 +1,415 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>JSDoc: Class: Net</title>
+
+    <script src="scripts/prettify/prettify.js"> </script>
+    <script src="scripts/prettify/lang-css.js"> </script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link type="text/css" rel="stylesheet" href="styles/prettify-tomorrow.css">
+    <link type="text/css" rel="stylesheet" href="styles/jsdoc-default.css">
+</head>
+
+<body>
+
+<div id="main">
+
+    <h1 class="page-title">Class: Net</h1>
+
+    
+
+
+
+
+<section>
+
+<header>
+    
+        <h2><span class="attribs"><span class="type-signature"></span></span>Net<span class="signature">(netname, wires<span class="signature-attributes">opt</span>, pins<span class="signature-attributes">opt</span>)</span><span class="type-signature"></span></h2>
+        
+            <div class="class-description"><p>Representation of a single potential/net.</p></div>
+        
+    
+</header>
+
+<article>
+    <div class="container-overview">
+    
+        
+
+    
+    <h2>Constructor</h2>
+    
+
+    
+    <h4 class="name" id="Net"><span class="type-signature"></span>new Net<span class="signature">(netname, wires<span class="signature-attributes">opt</span>, pins<span class="signature-attributes">opt</span>)</span><span class="type-signature"></span></h4>
+    
+
+    
+
+
+
+<div class="description">
+    <p>Generate a &quot;network&quot; / potential.</p>
+</div>
+
+
+
+
+
+
+
+
+
+    <h5>Parameters:</h5>
+    
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+        <th>Attributes</th>
+        
+
+        
+        <th>Default</th>
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>netname</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">string</span>
+
+
+            
+            </td>
+
+            
+                <td class="attributes">
+                
+
+                
+
+                
+                </td>
+            
+
+            
+                <td class="default">
+                
+                </td>
+            
+
+            <td class="description last"><p>the name of the net/potential</p></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>wires</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">Array.&lt;<a href="Wire.html">Wire</a>></span>
+
+
+            
+            </td>
+
+            
+                <td class="attributes">
+                
+                    &lt;optional><br>
+                
+
+                
+
+                
+                </td>
+            
+
+            
+                <td class="default">
+                
+                    []
+                
+                </td>
+            
+
+            <td class="description last"><p>a list of corresponding wires</p></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>pins</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">Array.&lt;<a href="Pin.html">Pin</a>></span>
+
+
+            
+            </td>
+
+            
+                <td class="attributes">
+                
+                    &lt;optional><br>
+                
+
+                
+
+                
+                </td>
+            
+
+            
+                <td class="default">
+                
+                    []
+                
+                </td>
+            
+
+            <td class="description last"><p>a list of corresponding pins</p></td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+
+
+
+
+
+    <h5 class="subsection-title">Properties:</h5>
+
+    
+
+<table class="props">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>netname</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">string</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p>the name of the net/potential</p></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>wires</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">Array.&lt;<a href="Wire.html">Wire</a>></span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p>a list of corresponding wires</p></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>pins</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">Array.&lt;<a href="Pin.html">Pin</a>></span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p>a list of corresponding pins</p></td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="net.mjs.html">net.mjs</a>, <a href="net.mjs.html#line11">line 11</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    
+    </div>
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+</article>
+
+</section>
+
+
+
+
+</div>
+
+<nav>
+    <h2><a href="index.html">Home</a></h2><h3>Classes</h3><ul><li><a href="ABLTransistorMapper.html">ABLTransistorMapper</a></li><li><a href="Component.html">Component</a></li><li><a href="Converter.html">Converter</a></li><li><a href="Coordinate.html">Coordinate</a></li><li><a href="Net.html">Net</a></li><li><a href="NodeComponent.html">NodeComponent</a></li><li><a href="PathComponent.html">PathComponent</a></li><li><a href="Pin.html">Pin</a></li><li><a href="PotentialComponent.html">PotentialComponent</a></li><li><a href="Schematic.html">Schematic</a></li><li><a href="Transistor.html">Transistor</a></li><li><a href="Wire.html">Wire</a></li></ul><h3>Global</h3><ul><li><a href="global.html#ADS_COMPONENTS_MAP">ADS_COMPONENTS_MAP</a></li><li><a href="global.html#ADS_TIKZ_MAPPERS">ADS_TIKZ_MAPPERS</a></li><li><a href="global.html#TIKZ_COMPONENTS">TIKZ_COMPONENTS</a></li><li><a href="global.html#atoLaTex">atoLaTex</a></li><li><a href="global.html#closeFD">closeFD</a></li><li><a href="global.html#getCellArrayForInputFD">getCellArrayForInputFD</a></li><li><a href="global.html#strToInFile">strToInFile</a></li><li><a href="global.html#strToOutFile">strToOutFile</a></li></ul>
+</nav>
+
+<br class="clear">
+
+<footer>
+    Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 4.0.2</a> on Tue Jul 25 2023 10:26:18 GMT+0200 (Mitteleuropäische Sommerzeit)
+</footer>
+
+<script> prettyPrint(); </script>
+<script src="scripts/linenumber.js"> </script>
+</body>
+</html>

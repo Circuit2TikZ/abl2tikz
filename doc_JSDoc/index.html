@@ -1,0 +1,260 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>JSDoc: Home</title>
+
+    <script src="scripts/prettify/prettify.js"> </script>
+    <script src="scripts/prettify/lang-css.js"> </script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link type="text/css" rel="stylesheet" href="styles/prettify-tomorrow.css">
+    <link type="text/css" rel="stylesheet" href="styles/jsdoc-default.css">
+</head>
+
+<body>
+
+<div id="main">
+
+    <h1 class="page-title">Home</h1>
+
+    
+
+
+
+    
+
+
+    <h3>abl2tikz 0.0.1</h3>
+
+
+
+
+
+
+
+
+
+
+    
+
+
+
+
+    <section>
+        <article><h1>abl2tikz</h1>
+<p>Command line tool for converting Keysight ADS schematics to CircuiTikZ</p>
+<h2>Prerequisites</h2>
+<p>This is a Node.js package and thus an installation of node and npm (usually bundled with node) is necessary. Node.js
+version 18 (LTS) was used for development. It is not necessary to match this version, but it is recommended not to use
+outdated releases.</p>
+<p>NPM is on some systems by default configured to install global packages to a folder only admins can access. This can be
+resolved either by using admin rights on every (global) package installation or by changing NPMs prefix. Global
+installation of this package is not necessary, but it makes using it easier, as it can be run form within any
+directory.</p>
+<p>You can check your current prefix with</p>
+<pre class="prettyprint source lang-shell"><code>npm config get prefix -g
+</code></pre>
+<p>and alter it with</p>
+<pre class="prettyprint source lang-shell"><code>npm config set prefix &lt;MY-GLOBAL-PREFIX> -g
+</code></pre>
+<p>NPMs documentation suggests <code>%APPDATA%\npm</code> or <code>%LOCALAPPDATA%\npm</code> for Windows and <code>~/.npm-global</code> for Linux/macOS. In
+order to run globally installed programs, the <code>PATH</code> variable should contain <code>&lt;MY-GLOBAL-PREFIX&gt;/bin</code>. As this depends
+on your system and the Node.js (installer) version, it is recommended to check the documentation and your configuration
+before applying any changes.</p>
+<p>NPM provides information about this topic on several sites:</p>
+<ul>
+<li><a href="https://docs.npmjs.com/downloading-and-installing-packages-globally">Downloading and installing packages globally</a></li>
+<li><a href="https://docs.npmjs.com/resolving-eacces-permissions-errors-when-installing-packages-globally">Resolving EACCES permissions errors when installing packages globally</a>,</li>
+<li><a href="https://docs.npmjs.com/try-the-latest-stable-version-of-npm">Try the latest stable version of npm</a></li>
+</ul>
+<h2>Installation</h2>
+<p>Abl2tikz is not (yet) uploaded to a public repository like npmjs.com. In order to use it you must either download the
+newest release as an archive (abl2tikz-*.tgz) or pull it from GitLab.</p>
+<p>There are three options for installing:</p>
+<ul>
+<li>install globally</li>
+<li>link</li>
+<li>install</li>
+</ul>
+<p>Plain install just fetches dependencies. It can then only be executed from within the package directory. Link(ing) works
+similar, but also creates a link in the global prefix to this package. It can therefore be executed in any directory, as
+long as the package directory isn't moved or deleted. The global install instead copies the package to the global prefix
+and then fetches dependencies. The package (folder) can therefore be removed while the program still works within any
+directory.</p>
+<h3>Install from tarball</h3>
+<p>For a global install, run the following command in a shell/command prompt. If you don't want to install globally, just
+omit the <code>-g</code>.</p>
+<pre class="prettyprint source lang-shell"><code>npm install -g path/to/abl2tikz-x.x.x.tgz # replace with your path
+</code></pre>
+<p>If you install locally, the program is now in <code>node_modules/abl2tikz/</code>. You can now (optionally) link it. To do so, you
+must first change to this directory and then run <code>npm link</code>:</p>
+<pre class="prettyprint source lang-shell"><code>cd node_modules/abl2tikz/
+npm link
+</code></pre>
+<h3>Install from git or directory</h3>
+<p>Clone/pull the current version from git or download from GitLab and extract the files. Open a shell or command prompt
+and navigate to the extracted folder. If you list the folder contents, you should see this readme file.</p>
+<p>Then decide if you want to install locally:</p>
+<pre class="prettyprint source lang-shell"><code>npm install
+</code></pre>
+<p>install globally:</p>
+<pre class="prettyprint source lang-shell"><code>npm install -g
+</code></pre>
+<p>or install (locally) and link globally:</p>
+<pre class="prettyprint source lang-shell"><code>npm link
+</code></pre>
+<h2>Usage</h2>
+<p>If installed globally (or linked), the CLI can be run using</p>
+<pre class="prettyprint source lang-shell"><code>abl2tikz &lt;arguments ...>
+</code></pre>
+<p>Otherwise, the path to the file <code>cli.mjs</code> must be typed every time</p>
+<pre class="prettyprint source lang-shell"><code>node path/to/abl2tikz/cli.mjs &lt;arguments ...>
+</code></pre>
+<p>There are three supported commands:</p>
+<ul>
+<li>convert</li>
+<li>list-cells</li>
+<li>list-schematics
+Abl2tikz and every command have a built-in help. E.g. to show the help for convert, just type</li>
+</ul>
+<pre class="prettyprint source lang-shell"><code>abl2tikz convert --help
+</code></pre>
+<h3>Usage example</h3>
+<p>Let's say you have exported the file <code>myProject.xml</code> from Keysight ADS using Advanced Board Link. You can now list all
+cells and schematics using</p>
+<pre class="prettyprint source lang-shell"><code>abl2tikz list-schematics myProject.xml
+</code></pre>
+<p>creating the output</p>
+<pre class="prettyprint source"><code>Schematics of main:
+ - my schematic
+Schematics of connections:
+ - test schematic
+ - schematic
+</code></pre>
+<p>You could now convert the schematic <code>my schematic</code> from the cell <code>main</code> to the file <code>innovativeSchematic.pgf</code>:</p>
+<pre class="prettyprint source lang-shell"><code>abl2tikz convert --cellname main --schematicname &quot;my schematic&quot; myProject.xml innovativeSchematic.pgf
+</code></pre></article>
+    </section>
+
+
+
+
+
+
+
+
+
+<section>
+
+<header>
+    
+        <h2>cli.mjs</h2>
+        
+    
+</header>
+
+<article>
+    <div class="container-overview">
+    
+        
+            <div class="description"><p>CLI for converting files from Keysight ADS to CircuiTikZ.
+This is the main file and kicks of the conversion or lists cell and schematic names using <a href="Converter.html">Converter</a>.
+The conversion generates a <a href="Schematic.html">Schematic</a>, which is then serialized.</p>
+<p>If the package is properly installed, you can use <code>abl2tikz &lt;args&gt;</code> in any directory to start.
+Otherwise, <code>npm run abl2tikz &lt;args&gt;</code> or <code>node cli.mjs &lt;args&gt;</code> work on any system. On a UNIX system, you can shorten
+this to <code>cli.mjs &lt;args&gt;</code>.</p>
+<p>Functions in this file are for internal use only.</p></div>
+        
+
+        
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="cli.mjs.html">cli.mjs</a>, <a href="cli.mjs.html#line13">line 13</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+        
+    
+    </div>
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+</article>
+
+</section>
+
+
+
+
+</div>
+
+<nav>
+    <h2><a href="index.html">Home</a></h2><h3>Classes</h3><ul><li><a href="ABLTransistorMapper.html">ABLTransistorMapper</a></li><li><a href="Component.html">Component</a></li><li><a href="Converter.html">Converter</a></li><li><a href="Coordinate.html">Coordinate</a></li><li><a href="Net.html">Net</a></li><li><a href="NodeComponent.html">NodeComponent</a></li><li><a href="PathComponent.html">PathComponent</a></li><li><a href="Pin.html">Pin</a></li><li><a href="PotentialComponent.html">PotentialComponent</a></li><li><a href="Schematic.html">Schematic</a></li><li><a href="Transistor.html">Transistor</a></li><li><a href="Wire.html">Wire</a></li></ul><h3>Global</h3><ul><li><a href="global.html#ADS_COMPONENTS_MAP">ADS_COMPONENTS_MAP</a></li><li><a href="global.html#ADS_TIKZ_MAPPERS">ADS_TIKZ_MAPPERS</a></li><li><a href="global.html#TIKZ_COMPONENTS">TIKZ_COMPONENTS</a></li><li><a href="global.html#atoLaTex">atoLaTex</a></li><li><a href="global.html#closeFD">closeFD</a></li><li><a href="global.html#getCellArrayForInputFD">getCellArrayForInputFD</a></li><li><a href="global.html#strToInFile">strToInFile</a></li><li><a href="global.html#strToOutFile">strToOutFile</a></li></ul>
+</nav>
+
+<br class="clear">
+
+<footer>
+    Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 4.0.2</a> on Tue Jul 25 2023 10:26:18 GMT+0200 (Mitteleuropäische Sommerzeit)
+</footer>
+
+<script> prettyPrint(); </script>
+<script src="scripts/linenumber.js"> </script>
+</body>
+</html>

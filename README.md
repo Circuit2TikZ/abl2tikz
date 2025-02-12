@@ -144,3 +144,5 @@ You could now convert the schematic `my schematic` from the cell `main` to the f
 ```shell
 abl2tikz convert --cellname main --schematicname "my schematic" myProject.xml innovativeSchematic.pgf
 ```
+## Docu 
+The package brings a JSDocs documentation, avaliable for review at [https://circuit2tikz.github.io/abl2tikz/index.html](https://circuit2tikz.github.io/abl2tikz/index.html).
